@@ -3,6 +3,13 @@ module.exports = function (robot) {
         msg.send("polo")
     });
 
+    robot.respond(/macro/, function (msg) {
+        msg.send("....polo?")
+        setTimeout(function () {
+            msg.send("ploo!");
+        }, 2000);
+    });
+
     robot.respond(/pollo/, function (msg) {
         msg.send("loco");
     });
