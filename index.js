@@ -48,7 +48,7 @@ module.exports = function (robot) {
         var article = msg.match[1];
         var insinuation = msg.match[2];
         setTimeout(function () {
-            msg.send("Your mom's #{article} #{insinuation}.");
+            msg.send("Your mom's " + article + " " + insinuation + ".");
         }, 1000);
     });
 
@@ -56,7 +56,7 @@ module.exports = function (robot) {
         var article = msg.match[1];
         var insinuation = msg.match[2];
         setTimeout(function () {
-            msg.send("Your mom's #{article} #{insinuation}.");
+            msg.send("Your mom's " + article + " " + insinuation + ".");
         }, 1000);
     });
 }
