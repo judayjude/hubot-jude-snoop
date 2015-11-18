@@ -38,6 +38,29 @@ module.exports = function (robot) {
         }, 1000);
     });
 
+
+    // ORDER IS IMPORTANT FOR THE FOLLOWING LISTENERS AND STATE VARS:
+    var muted = false;
+    robot.respond(/this (?:statement|sentence) is false|does a set of all sets contain itself/i, function (msg) {
+        setTimeout(function () {
+            msg.send("(waiting)");
+            muted = true;
+            setTimeout(function () {
+                muted = false;
+                msg.send("/me finished initializing.");
+            }, 1000 * 90);
+        }, 1000);
+    });
+
+    robot.hear(/(.*)$/i, function (msg) {
+        if (muted)
+            msg.finish();
+    });
+    var muteListener = robot.listeners.pop();
+    robot.listeners.unshift(muteListener);
+    // END ORDER SENSITIVE SECTION
+
+
     robot.hear(/who((?:'s | is )?[^\.\?!]*)\?/i, function (msg) {
         var question = msg.match[0];
         if (question.toLowerCase() == "who's the boss?" ||
