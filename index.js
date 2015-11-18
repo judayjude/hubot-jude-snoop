@@ -37,4 +37,26 @@ module.exports = function (robot) {
             msg.send(messagePair[1]);
         }, 1000);
     });
+
+    robot.hear(/who[^\.]*\?/i, function (msg) {
+        setTimeout(function () {
+            msg.send("your mom");
+        }, 1000);
+    });
+
+    robot.hear(/you(?: a|'?)re (a|the) ([^\.\?!]+)(?:!|\.|$)/i, function (msg) {
+        var article = msg.match[1];
+        var insinuation = msg.match[2];
+        setTimeout(function () {
+            msg.send("Your mom's #{article} #{insinuation}.");
+        }, 1000);
+    });
+
+    robot.hear(/@[a-zA-Z0-9]+(?: 's| is) (a|the) ([^\.\?!]+)(?:!|\.|$)/i, function (msg) {
+        var article = msg.match[1];
+        var insinuation = msg.match[2];
+        setTimeout(function () {
+            msg.send("Your mom's #{article} #{insinuation}.");
+        }, 1000);
+    });
 }
