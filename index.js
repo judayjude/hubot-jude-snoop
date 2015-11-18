@@ -39,6 +39,14 @@ module.exports = function (robot) {
     });
 
     robot.hear(/who((?:'s | is )?[^\.\?!]*)\?/i, function (msg) {
+        var question = msg.match[0];
+        if (question.toLowerCase() == "who's the boss?" ||
+            question.toLowerCase() == "who is the boss?") {
+            setTimeout(function () {
+                msg.send("Angela.");
+            }, 1000);
+            return;
+        }
         setTimeout(function () {
             msg.send("Your mom.");
         }, 1000);
