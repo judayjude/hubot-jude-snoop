@@ -38,10 +38,16 @@ module.exports = function (robot) {
         }, 1000);
     });
 
-    robot.hear(/who[^\.]*\?/i, function (msg) {
+    robot.hear(/who((?:'s | is )?[^\.\?!]*)\?/i, function (msg) {
         setTimeout(function () {
-            msg.send("your mom");
+            msg.send("Your mom.");
         }, 1000);
+        var descriptivePhrase = msg.match[1];
+        if (descriptivePhrase && descriptivePhrase.length && descriptivePhrase.length > 2) {
+            setTimeout(function () {
+                msg.send("Your mom" + descriptivePhrase + ".");
+            }, 2000);
+        }
     });
 
     robot.hear(/you(?: a|'?)re (a|the) ([^\.\?!]+)(?:!|\.|$)/i, function (msg) {
