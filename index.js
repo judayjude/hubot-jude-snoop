@@ -81,11 +81,11 @@ module.exports = function (robot) {
         }
     });
 
-    robot.hear(/you(?: a|'?)re (a |the )([^\.\?!]+)(?:!|\.|$)/i, function (msg) {
+    robot.hear(/you(?: a|'?)re (a |the )?([^\.\?!]+)(?:!|\.|$)/i, function (msg) {
         var article = msg.match[1];
         var insinuation = msg.match[2];
         setTimeout(function () {
-            msg.send("Your mom's " + article + " " + insinuation + ".");
+            msg.send("Your mom's " + article + insinuation + ".");
         }, 1000);
     });
 
