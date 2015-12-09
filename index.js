@@ -77,7 +77,7 @@ module.exports = function (robot) {
         var descriptivePhrase = msg.match[1];
         if (descriptivePhrase && descriptivePhrase.length && descriptivePhrase.length > 2) {
             setTimeout(function () {
-                msg.send("Your " + mom + " " + descriptivePhrase + ".");
+                msg.send("Your " + mom + descriptivePhrase + ".");
             }, 2000);
         }
     });
