@@ -62,6 +62,7 @@ module.exports = function (robot) {
 
 
     robot.hear(/who((?:'s | is )?[^\.\?!]*)\?/i, function (msg) {
+        var mom = isBritish(msg) ? "mum" : "mom";
         var question = msg.match[0];
         if (question.toLowerCase() == "who's the boss?" ||
             question.toLowerCase() == "who is the boss?") {
@@ -71,29 +72,36 @@ module.exports = function (robot) {
             return;
         }
         setTimeout(function () {
-            msg.send("Your mom.");
+            msg.send("Your " + mom + ".");
         }, 1000);
         var descriptivePhrase = msg.match[1];
         if (descriptivePhrase && descriptivePhrase.length && descriptivePhrase.length > 2) {
             setTimeout(function () {
-                msg.send("Your mom" + descriptivePhrase + ".");
+                msg.send("Your " + mom + " " + descriptivePhrase + ".");
             }, 2000);
         }
     });
 
+    function isBritish(msg) {
+        var sender = msg.message.user.name.toLowerCase();
+        return sender.indexOf("tucker") >= 0;
+    }
+
     robot.hear(/you(?: a|'?)re (an? |the )?([^\.\?!]+)(?:! |\. |$)/i, function (msg) {
+        var yourmom = isBritish(msg) ? "Your mum's " : "Your mom's ";
         var article = msg.match[1] || "";
         var insinuation = msg.match[2] || (article ? "thing" : "that");
         setTimeout(function () {
-            msg.send("Your mom's " + article + insinuation + ".");
+            msg.send(yourmom + article + insinuation + ".");
         }, 1000);
     });
 
     robot.hear(/@[a-zA-Z0-9]+(?: ?'s| is) (a|the) ([^\.\?!]+)(?:!|\.|$)/i, function (msg) {
+        var yourmom = isBritish(msg) ? "Your mum's " : "Your mom's ";
         var article = msg.match[1];
         var insinuation = msg.match[2];
         setTimeout(function () {
-            msg.send("Your mom's " + article + " " + insinuation + ".");
+            msg.send(yourmom + article + " " + insinuation + ".");
         }, 1000);
     });
 }
