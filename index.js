@@ -87,10 +87,13 @@ module.exports = function (robot) {
         return sender.indexOf("tucker") >= 0;
     }
 
-    robot.hear(/you(?: a|'?)re (an? |the )?([^\.\?!]+)(?:! |\. |$)/i, function (msg) {
+    robot.hear(/(what +)?you(?: a|'?)re (an? |the )?([^\.\?!]+)(?:! |\. |$)/i, function (msg) {
         var yourmom = isBritish(msg) ? "Your mum's " : "Your mom's ";
-        var article = msg.match[1] || "";
-        var insinuation = msg.match[2] || (article ? "thing" : "that");
+        var leadingWhat = msg.match[1];
+        var article = msg.match[2] || "";
+        var insinuation = msg.match[3] || (article ? "thing" : "that");
+        if (leadingWhat)
+            return;
         setTimeout(function () {
             msg.send(yourmom + article + insinuation + ".");
         }, 1000);
