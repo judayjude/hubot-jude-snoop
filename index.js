@@ -107,4 +107,32 @@ module.exports = function (robot) {
             msg.send(yourmom + article + " " + insinuation + ".");
         }, 1000);
     });
+
+    var lastPerRoom = {};
+    robot.respond(/.*/, function (msg) {
+        lastPerRoom[msg.message.room] = { user: msg.message.user.name + "", said: msg.match[0] + "" };
+    });
+
+    robot.respond(/malko last/i, function (msg) {
+        var room, lastMsg, list = "/quote ";
+        for (room in lastPerRoom) {
+            lastMsg = lastPerRoom[room];
+            list += "\n" + room + ": " + lastMsg.user + ": " + lastMsg.said + "\n";
+        }
+        msg.send(list);
+    });
+
+    robot.respond(/malko say (\S+) (\S.+)$/i, function (msg) {
+        var room = msg.match[1];
+        var say = msg.match[2];
+        if (!room || !say)
+            return;
+
+        robot.messageRoom(room, say);
+    });
+
+    var startedAt = new Date();
+    robot.respond(/^stats$/, function (msg) {
+        msg.send("/me started at: " + startedAt);
+    });
 }
