@@ -110,7 +110,8 @@ module.exports = function (robot) {
 
     var lastPerRoom = {};
     robot.respond(/.*/, function (msg) {
-        lastPerRoom[msg.message.room] = { user: msg.message.user.name + "", said: msg.match[0] + "" };
+        if (msg.message.room)
+            lastPerRoom[msg.message.room] = { user: msg.message.user.name + "", said: msg.match[0] + "" };
     });
 
     robot.respond(/malko last/i, function (msg) {
@@ -125,14 +126,20 @@ module.exports = function (robot) {
     robot.respond(/malko say (\S+) (\S.+)$/i, function (msg) {
         var room = msg.match[1];
         var say = msg.match[2];
-        if (!room || !say)
+        if (!room || !say) {
+            msg.send("Cannot pull strings in room: " + room + ", saying: " + say);
             return;
+        }
 
-        robot.messageRoom(room, say);
+        try {
+            robot.messageRoom(room + "", say + "");
+        } catch (e) {
+            msg.send(e);
+        }
     });
 
     var startedAt = new Date();
-    robot.respond(/^stats$/, function (msg) {
+    robot.respond(/^(?:\S+\s+)?stats$/i, function (msg) {
         msg.send("/me started at: " + startedAt);
     });
 }
