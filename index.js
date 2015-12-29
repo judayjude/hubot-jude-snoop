@@ -148,10 +148,10 @@ module.exports = function (robot) {
             return;
         }
 
-        msg.send("Addressing room: " + room + ", saying: " + say);
+        msg.send("Addressing room: " + room + "@conf.hipchat.com, saying: " + say);
 
         try {
-            robot.messageRoom(room + "", say + "");
+            robot.messageRoom(room + "@conf.hipchat.com", say + "");
         } catch (e) {
             msg.send(e);
         }
