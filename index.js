@@ -110,9 +110,26 @@ module.exports = function (robot) {
 
     var lastPerRoom = {};
     robot.respond(/.*/, function (msg) {
-        if (msg.message.room)
-            lastPerRoom[msg.message.room] = { user: msg.message.user.name + "", said: msg.match[0] + "" };
+        if (!isNil(msg, "message.room"))
+            lastPerRoom[msg.message.room + ""] = { user: msg.message.user.name + "", said: msg.match[0] + "" };
     });
+
+    function isNil(root, hierarchy) {
+        if (typeof hierarchy == "undefined")
+            return (typeof root == "undefined") || root === null || root == "";
+
+        var nodes = (typeof hierarchy == "string") ? hierarchy.split(".") : hierarchy;
+        if (nodes.length == 0 || isNil(nodes[0]))
+            return true;
+
+        var nextNode = nodes.shift();
+        if (typeof root[nextNode] == "undefined" || root[nextNode] === null)
+            return true;
+        if (root[nextNode] == "" && nodes.length == 0)
+            return true;
+
+        return (nodes.length) ? isNil(root[nextNode], nodes) : false;
+    }
 
     robot.respond(/malko last/i, function (msg) {
         var room, lastMsg, list = "/quote ";
@@ -130,6 +147,8 @@ module.exports = function (robot) {
             msg.send("Cannot pull strings in room: " + room + ", saying: " + say);
             return;
         }
+
+        msg.send("Addressing room: " + room + ", saying: " + say);
 
         try {
             robot.messageRoom(room + "", say + "");
