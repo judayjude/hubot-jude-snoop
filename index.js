@@ -139,7 +139,7 @@ module.exports = function (robot) {
     });
 
     var startedAt = new Date();
-    robot.respond(/^(?:\S+\s+)?stats$/i, function (msg) {
+    robot.respond(/stats/i, function (msg) {
         msg.send("/me started at: " + startedAt);
     });
 }
